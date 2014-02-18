@@ -1,0 +1,38 @@
+<html>
+  <head>
+    <title>Yabuf</title>
+    <link href="{{url_for('static', filename='css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{url_for('static', filename='favicon.ico')}}" rel="shortcut icon">
+    <style type="text/css">
+      body {
+      padding: 50px;
+      width: 800px;
+      text-align: center;
+      margin: auto;
+      }
+    </style>
+  </head>
+  <body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    {% if category == 'error' %}
+    <div class="alert alert-danger">
+      <a class="close" data-dismiss="alert">×</a>
+      {{ message }}
+    </div>
+    {% elif category == 'success' %}
+    <div class="alert alert-success">
+      <a class="close" data-dismiss="alert">×</a>
+      {{ message }}
+    </div>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+    <h1>YABUF</h1>
+    {% block content %}{% endblock %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="{{url_for('static', filename='js/bootstrap.min.js')}}"></script>
+  </body>
+</html>

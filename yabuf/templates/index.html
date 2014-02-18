@@ -1,28 +1,16 @@
-<html>
-  <head>
-    <title>Yabuf</title>
-    <link href="{{url_for('static', filename='css/bootstrap.min.css')}}" rel="stylesheet">
-    <link href="{{url_for('static', filename='favicon.ico')}}" rel="shortcut icon">
-    <style type="text/css">
-      body {
-      padding: 50px;
-      width: 800px;
-      text-align: center;
-      margin: auto;
-      }
-    </style>
-  </head>
-  <body>
-    <h1>YABUF</h1>
-    <form action="/post" method="post">
-      <textarea name="content" cols="80" rows="10"></textarea>
-      <br>
-      <input type="submit" value="Send">
-    </form>
-    {% for post in content %}
-    <p>{{post}}</p>
-    {% endfor %}
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="{{url_for('static', filename='js/bootstrap.min.js')}}"></script>
-  </body>
-</html>
+{% extends "base.html" %}
+{% block content %}
+{% if login %}
+<a href="{{url_for('logout')}}">logout</a>
+<form action="/post" method="post">
+  <textarea name="content" cols="80" rows="10"></textarea>
+  <br>
+  <input type="submit" value="Send">
+</form>
+{% else %}
+<a href="{{url_for('login')}}">login</a>
+{% endif %}
+{% for post in content %}
+<p>{{post}}</p>
+{% endfor %}
+{% endblock %}
