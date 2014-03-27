@@ -1,16 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-{% if login %}
-<a href="{{url_for('logout')}}">logout</a>
-<form action="/post" method="post">
-  <textarea name="content" cols="80" rows="10"></textarea>
-  <br>
-  <input type="submit" value="Send">
-</form>
-{% else %}
-<a href="{{url_for('login')}}">login</a>
-{% endif %}
-{% for post in content %}
-<p>{{post}}</p>
+{% for paper in papers %}
+<p>{{ paper|markdown }}</p>
 {% endfor %}
 {% endblock %}

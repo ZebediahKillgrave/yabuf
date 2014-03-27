@@ -1,4 +1,4 @@
-from setuptools import setup, find_packages
+Bfrom setuptools import setup, find_packages
 from os.path import join, dirname
 from app import __version__
 
@@ -14,6 +14,7 @@ setup(
             ]
         },
     install_requires = [
-        'Flask==0.10.1'
+        'Flask==0.10.1',
+        'Flask-Markdown==0.3'
         ],
 )
