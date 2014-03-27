@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 from os.path import join, dirname
-from yabuf import __version__
+from app import __version__
 
 setup(
     name='yabuf',
@@ -10,7 +10,7 @@ setup(
     include_package_data=True,
     entry_points={
         'console_scripts': [
-            'yabuf = yabuf.main:main',
+            'yabuf = app.main:main',
             ]
         },
     install_requires = [
