@@ -26,6 +26,14 @@ def index():
     papers = get_papers()
     return render_template('index.html', papers=papers)
 
+@app.route('/about-me')
+def about():
+    return render_template('about.html')
+
+@app.route('/contact')
+def contact():
+    return render_template('contact.html')
+
 def main():
     app.run(host='0.0.0.0', debug=True)
 
