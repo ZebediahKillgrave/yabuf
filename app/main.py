@@ -1,11 +1,26 @@
 from flask import Flask, request, render_template, url_for, redirect
-from flask.ext.markdown import Markdown
+from markdown import markdown
+from os import listdir
+from os.path import isfile, join
 
 app = Flask(__name__)
-Markdown(app)
+PAPERS_PATH = 'papers/'
 
 def get_papers():
-    return ["# Titre\n\nTexte", "## Titre 2\n\nTexte 2"]
+    papers = []
+    
+    # http://stackoverflow.com/a/3207973/2437219
+    paper_files = (f for f in listdir(PAPERS_PATH)
+                   if (isfile(join(PAPERS_PATH, f)) and
+                       f.endswith(".release")))
+
+    for paper_file in paper_files:
+        with open(join(PAPERS_PATH, paper_file)) as f:
+            papers.append(markdown(f.read(), 
+                                   output_format="html5",
+                                   extensions=['codehilite']))
+
+    return papers
 
 @app.route('/')
 def index():
