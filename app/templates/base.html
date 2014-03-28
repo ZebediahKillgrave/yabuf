@@ -13,11 +13,16 @@
     </style>
   </head>
   <body class="panel panel-default">
-    volent's blog
+    <h4>volent's blog</h4>
       <ul class="nav nav-tabs">
-	<li class="active"><a href="#">Home</a></li>
-	<li><a href="#">Profile</a></li>
-	<li><a href="#">Messages</a></li>
+	<li {% if active_page == "index" %} class="active" {% endif %} >
+	  <a href="{{ url_for('index') }}">Index</a>
+	</li>
+	<li {% if active_page == "about" %} class="active" {% endif %} >
+	  <a href="{{ url_for('about') }}">About Me</a>
+	</li>
+	<li {% if active_page == "contact" %} class="active" {% endif %} >
+	  <a href="{{ url_for('contact') }}">Contact</a></li>
       </ul>
     <div class="panel-body">
       {% block content %}{% endblock %}

@@ -1,4 +1,6 @@
 {% extends "base.html" %}
+{% set active_page = "index" %}
+
 {% block content %}
 {% for paper in papers %}
 <p>{{ paper|safe }}</p>
