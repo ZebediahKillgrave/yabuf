@@ -15,6 +15,6 @@ setup(
         },
     install_requires = [
         'Flask==0.10.1',
-        'Flask-Markdown==0.3'
+        'Markdown==2.4'
         ],
 )
