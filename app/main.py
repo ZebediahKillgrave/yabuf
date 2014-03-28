@@ -11,8 +11,7 @@ def get_papers():
     
     # http://stackoverflow.com/a/3207973/2437219
     paper_files = (f for f in listdir(PAPERS_PATH)
-                   if (isfile(join(PAPERS_PATH, f)) and
-                       f.endswith(".release")))
+                   if (isfile(join(PAPERS_PATH, f))))
 
     for paper_file in paper_files:
         with open(join(PAPERS_PATH, paper_file)) as f:
