@@ -8,4 +8,4 @@ It took me a while to start because I wanted to build it by myself and I never f
 
 It's an extremely simple static blog using the Flask python framework, and I'm editing this current post in the beautiful github editor. I'm planning on adding new features in the coming weeks (months ?) and if you want to get the version without my blog posts check out the engine-x.x branches. (there is only the engine-0.1 branch for now)
 
-The blog will be about everything I get to touch, and that means python, rasberry, symfony, angular and many other things !
+The blog will be about everything I get to touch, and that means python, raspberry, symfony, angular and many other things !
