@@ -1,10 +1,10 @@
 from flask import Flask, request, render_template, url_for, redirect
 from markdown import markdown
 from os import listdir
-from os.path import isfile, join
+from os.path import isfile, join, dirname
 
 app = Flask(__name__)
-PAPERS_PATH = 'papers/'
+PAPERS_PATH = join(dirname(__file__), 'papers/')
 
 def get_papers():
     papers = []
