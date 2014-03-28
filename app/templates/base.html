@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>volent blog</title>
+    <title>volent's blog</title>
     <link href="{{url_for('static', filename='css/bootstrap.min.css')}}" rel="stylesheet">
     <link href="{{url_for('static', filename='favicon.ico')}}" rel="shortcut icon">
     <style type="text/css">
@@ -8,12 +8,21 @@
       padding: 50px;
       width: 800px;
       margin: auto;
+      margin-top: 40px;
       }
     </style>
   </head>
-  <body>
-    {% block content %}{% endblock %}
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="{{url_for('static', filename='js/bootstrap.min.js')}}"></script>
+  <body class="panel panel-default">
+    volent's blog
+      <ul class="nav nav-tabs">
+	<li class="active"><a href="#">Home</a></li>
+	<li><a href="#">Profile</a></li>
+	<li><a href="#">Messages</a></li>
+      </ul>
+    <div class="panel-body">
+      {% block content %}{% endblock %}
+    </div>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+      <script src="{{url_for('static', filename='js/bootstrap.min.js')}}"></script>
   </body>
 </html>
