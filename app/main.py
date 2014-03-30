@@ -1,7 +1,8 @@
 from flask import Flask, request, render_template, url_for, redirect, abort
 from markdown import markdown
-from os import listdir
+from os import listdir, stat
 from os.path import isfile, join, dirname
+from time import asctime, gmtime
 
 app = Flask(__name__)
 PAPERS_PATH = join(dirname(__file__), 'papers/')
@@ -40,7 +41,7 @@ class Paper(object):
         hg = HeaderGrammar(raw)
         hg.parse()
 
-        self.created_at = getattr(hg, "created_at", "Unknown")
+        self.created_at = getattr(hg, "created_at", "Unkown")
         self.author = getattr(hg, "author", "volent")
         self.title = getattr(hg, "title", title)
         self.sticky = getattr(hg, "sticky", None)
@@ -55,7 +56,8 @@ def fetch_all_papers():
                    if (isfile(join(PAPERS_PATH, f))))
 
     for paper_file in paper_files:
-        with open(join(PAPERS_PATH, paper_file)) as f:
+        file_path = join(PAPERS_PATH, paper_file)
+        with open(file_path) as f:
             paper_name = paper_file.split('.')[0]
             paper = Paper(f.read(), paper_file)
             papers[paper_name] = paper
