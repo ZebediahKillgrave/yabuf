@@ -12,6 +12,6 @@ It's been a long time since I wanted to start writing a blog. I think it's a gre
 
 It took me a while to start because I wanted to build it by myself and I never found the time. The current code is opensource and avalaible on my [github](https://github.com/ZebediahKillgrave/yabuf).
 
-It's an extremely simple static blog using the Flask python framework, and I'm editing this current post in the beautiful github editor. I'm planning on adding new features in the coming weeks (months ?) and if you want to get the version without my blog posts check out the engine-x.x branches. (there is only the engine-0.1 branch for now)
+It's an extremely simple static blog using the Flask python framework, and I'm editing this current post in the beautiful github editor. I'm planning on adding new features in the coming weeks (months ?) and if you want to use it just remove my posts in the app/papers/ folder.
 
 The blog will be about everything I get to touch, and that means python, raspberry, symfony, angular and many other things !
