@@ -43,10 +43,12 @@ class Paper(object):
         self.created_at = getattr(hg, "created_at", "Unknown")
         self.author = getattr(hg, "author", "volent")
         self.title = getattr(hg, "title", title)
+        self.sticky = getattr(hg, "sticky", None)
         self.content = markdown(hg.content, output_format="html5", extensions=['codehilite'])
 
 def fetch_all_papers():
     papers = {}
+    stickies = []
 
     # http://stackoverflow.com/a/3207973/2437219
     paper_files = (f for f in listdir(PAPERS_PATH)
@@ -54,29 +56,29 @@ def fetch_all_papers():
 
     for paper_file in paper_files:
         with open(join(PAPERS_PATH, paper_file)) as f:
-            papers[paper_file.split('.')[0]] = Paper(f.read(), paper_file)
+            paper_name = paper_file.split('.')[0]
+            paper = Paper(f.read(), paper_file)
+            papers[paper_name] = paper
+            if paper.sticky:
+                stickies.append((paper_name, paper.sticky))
 
-    return papers
+    return stickies, papers
 
 @app.route('/<paper_name>')
 def papers(paper_name):
-    papers = fetch_all_papers()
+    stickies, papers = fetch_all_papers()
     try:
         paper = papers[paper_name]
     except KeyError:
         return abort(404)
-    if paper_name == "contact":
-        return render_template("contact.html", content=paper)
-    elif paper_name == "about":
-        return render_template("about.html", content=paper)
-    return render_template("paper.html", content=paper)
+    return render_template("paper.html", paper_name=paper_name, stickies=stickies, content=paper)
 
 @app.route('/')
 def index():
-    papers = fetch_all_papers()
+    stickies, papers = fetch_all_papers()
     papers = {paper_name:papers[paper_name] for paper_name in papers
-              if paper_name != "about" and paper_name != "contact"}
-    return render_template('index.html', papers=papers)
+              if paper_name not in (s[0] for s in stickies)}
+    return render_template('index.html', paper_name='index', stickies=stickies, papers=papers)
 
 def main():
     app.run(host='0.0.0.0', debug=True)
