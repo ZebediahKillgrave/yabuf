@@ -2,7 +2,10 @@
 {% set active_page = "index" %}
 
 {% block content %}
-{% for paper in papers %}
-<p>{{ paper|safe }}</p>
+{% for paper_name in papers %}
+<a href="{{ url_for('papers', paper_name=paper_name) }}">
+  <h1>{{ papers[paper_name].title }}</h1>
+</a>
+{{ papers[paper_name].content|safe }}
 {% endfor %}
 {% endblock %}

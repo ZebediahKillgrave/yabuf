@@ -1,4 +1,10 @@
-# My blog
+title : My blog
+
+created_at : 03/30/14 11:30
+
+author : volent
+
+----------
 
 This is my first blog and I plan to post as much as I can on it.
 
