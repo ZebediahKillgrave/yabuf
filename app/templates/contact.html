@@ -2,5 +2,6 @@
 {% set active_page = "contact" %}
 
 {% block content %}
-<p>Contact page</p>
+<h1>{{ content.title }}</h1>
+{{ content.content|safe }}
 {% endblock %}
