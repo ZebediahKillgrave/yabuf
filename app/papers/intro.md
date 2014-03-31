@@ -1,6 +1,6 @@
 title : My blog
 
-created_at : 03/30/14 11:30
+created_at : Sunday, 30 March 2014
 
 author : volent
 
