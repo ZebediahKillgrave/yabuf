@@ -6,9 +6,12 @@
 <a href="{{ url_for('papers', paper_name=paper_name) }}">
   <h1>{{ papers[paper_name].title }}</h1>
 </a>
-<p><i>{{ papers[paper_name].created_at }}</i></p>
 {{ papers[paper_name].content|safe }}
-<p><a href="{{ url_for('papers', paper_name=paper_name) }}#disqus_thread">0 Comments</a></p>
+<p>
+  <a href="{{ url_for('papers', paper_name=paper_name)}}#disqus_thread">
+    0 Comments</a>
+  ▻ {{ papers[paper_name].created_at }}
+</p>
 {% endfor %}
 <a href="#disqus_thread"></a>
 {% endblock %}
