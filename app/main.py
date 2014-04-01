@@ -85,7 +85,8 @@ def index():
     papers = [p[1] for p in papers if not p[1].sticky]
     papers.reverse()
     stickies.sort()
-    return render_template('index.html', paper_name='index', stickies=stickies, papers=papers)
+    return render_template('index.html', paper_name='index', # don't remove
+                           stickies=stickies, papers=papers)
 
 def main():
     app.run(host='0.0.0.0', debug=True)
