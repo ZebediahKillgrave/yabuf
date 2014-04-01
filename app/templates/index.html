@@ -2,16 +2,15 @@
 {% set active_page = "index" %}
 
 {% block content %}
-{% for paper_name in papers %}
-<a href="{{ url_for('papers', paper_name=paper_name) }}">
-  <h1>{{ papers[paper_name].title }}</h1>
+{% for paper in papers %}
+<a href="{{ url_for('papers', paper_name=paper.paper_name) }}">
+  <h1>{{ paper.title }}</h1>
 </a>
-{{ papers[paper_name].content|safe }}
+{{ paper.content|safe }}
 <p>
-  <a href="{{ url_for('papers', paper_name=paper_name)}}#disqus_thread">
+  <a href="{{ url_for('papers', paper_name=paper.paper_name)}}#disqus_thread">
     0 Comments</a>
-  ▻ {{ papers[paper_name].created_at }}
+  ▻ {{ paper.fmt_date }}
 </p>
 {% endfor %}
-<a href="#disqus_thread"></a>
 {% endblock %}

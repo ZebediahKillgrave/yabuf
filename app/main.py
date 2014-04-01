@@ -3,6 +3,7 @@ from markdown import markdown
 from os import listdir, stat
 from os.path import isfile, join, dirname
 from time import asctime, gmtime
+from datetime import datetime
 
 app = Flask(__name__)
 PAPERS_PATH = join(dirname(__file__), 'papers/')
@@ -36,19 +37,22 @@ class HeaderGrammar(object):
             self.content = self.raw
 
 class Paper(object):
-    def __init__(self, raw, title=""):
+    def __init__(self, raw, paper_name=""):
         self.raw = raw
         hg = HeaderGrammar(raw)
         hg.parse()
 
-        self.created_at = getattr(hg, "created_at", "Unkown")
+        date = getattr(hg, "date", "01-01-2000")
+        self.date = datetime.strptime(date, "%m-%d-%Y")
+        self.paper_name = paper_name
+        self.fmt_date = datetime.strftime(self.date, "%A, %d %B %Y")
         self.author = getattr(hg, "author", "volent")
-        self.title = getattr(hg, "title", title)
+        self.title = getattr(hg, "title", paper_name)
         self.sticky = getattr(hg, "sticky", None)
         self.content = markdown(hg.content, output_format="html5", extensions=['codehilite'])
 
 def fetch_all_papers():
-    papers = {}
+    papers = []
     stickies = []
 
     # http://stackoverflow.com/a/3207973/2437219
@@ -59,28 +63,29 @@ def fetch_all_papers():
         file_path = join(PAPERS_PATH, paper_file)
         with open(file_path) as f:
             paper_name = paper_file.split('.')[0]
-            paper = Paper(f.read(), paper_file)
-            papers[paper_name] = paper
+            paper = Paper(f.read(), paper_name)
+            papers.append((paper.date, paper))
             if paper.sticky:
                 stickies.append((paper_name, paper.sticky))
-
     return stickies, papers
 
 @app.route('/<paper_name>')
 def papers(paper_name):
     stickies, papers = fetch_all_papers()
     try:
-        paper = papers[paper_name]
-    except KeyError:
+        paper = [p[1] for p in papers if p[1].paper_name == paper_name][0]
+    except IndexError:
         return abort(404)
-    return render_template("paper.html", paper_name=paper_name, stickies=stickies, content=paper)
+    return render_template("paper.html", paper_name=paper_name, stickies=stickies, paper=paper)
 
 @app.route('/')
 def index():
     stickies, papers = fetch_all_papers()
-    papers = {paper_name:papers[paper_name] for paper_name in papers
-              if paper_name not in (s[0] for s in stickies)}
-    return render_template('index.html', paper_name='index', stickies=stickies, papers=papers)
+    papers.sort()
+    papers = [p[1] for p in papers if not p[1].sticky]
+    papers.reverse()
+    stickies.sort()
+    return render_template('index.html', stickies=stickies, papers=papers)
 
 def main():
     app.run(host='0.0.0.0', debug=True)
