@@ -10,17 +10,18 @@ I recently started to use the [tweepy](https://github.com/tweepy/tweepy) module 
 
 ### Get the twitter stream
 
-The first part of the project is all about getting that twitter stream. We need something that with a hashtags list will give us the tweet number for each hashtag during a given period.
+The first part of the project is all about getting the stream containing tweets with the hashtags we want to track.
 
-We will start with getting the tweet stream with a unique hashtag.
+Let's first try to get the tweet stream with a unique hashtag.
 
-> Don't forget to `pip install tweepy` 
+>     pip install tweepy
 
     :::python
+    # /stream.py
     import tweepy
     
-    CONSUMER_KEY, CONSUMER_SECRET = '', '' # fill with yours
-    USER_KEY, USER_SECRET = '', ''         # same here
+    CONSUMER_KEY, CONSUMER_SECRET = '', '' # dev.twitter.com to get yours
+    USER_KEY, USER_SECRET = '', ''  	   # same here
     
     class MyStream(tweepy.StreamListener):
         def __init__(self):
@@ -38,13 +39,20 @@ We will start with getting the tweet stream with a unique hashtag.
     if __name__ == "__main__":
         main()
 
-You can then launch the little script we wrote and enjoy a coffee while reading tweets about science.
+Should we try it ?
 
-Now that we've got this done it's really easy to track more than one hashtag, as you've probably already seen the `track` parameter is a list so we just have to add the hashtag we want to the list :
+    :::shell
+    $ python stream.py
+    Don't Stop Drinking Water http://bit.ly/1j0I29I  #Water #Science
+    ...
+
+Wow, that was easy ! Let's track two hashtags now :
 
     	 stream.filter(track=["#science", "#football"])
+
+Tweepy is definitely awesome ! 
     
-But we also need to know if a status if containing one, the other or both hashtags. Don't worry, no need to parse anything or use any king of regular expression, Twitter is kind enough the parse this for us and we can access this data easily using tweepy :
+We now need to know which tweet is containing one, the other or both hashtags. Don't worry, no need to parse anything or use any kind of regular expression, Twitter is kind enough to parse this for us and we can easily access this data using tweepy :
 
     :::python
         def on_status(self, tweet):
@@ -55,7 +63,7 @@ But we also need to know if a status if containing one, the other or both hashta
             if "football" in hashtags:
                print "This tweet is about #football !"
             
-That is starting to be interesting, we can now easily get the tweet number of each subject. But in order to later send it to our webapp, we will publish new status on a redis channel. This way we will be able to subscribe to the channel on the webapp and keep track of incoming status.
+This is starting to be interesting, we are now getting the amount of tweet for each hashtag. But in order to send it later to our webapp, we will publish new status on a redis channel. This way we will be able to subscribe to the channel on the webapp and keep track of incoming status.
 
 > You need redis-server and the python redis library for the next step
 >
@@ -84,7 +92,7 @@ We are now done with the twitter stream !
 
 ### Display the chart
 
-The second part is about displaying that chart we want. To do this I will use [smoothie.js](https://github.com/joewalnes/smoothie/), [Flask](https://github.com/mitsuhiko/flask) and [Flask-Sockets](https://github.com/kennethreitz/flask-sockets).
+The second part is about displaying the chart. To do this, I will use [smoothie.js](https://github.com/joewalnes/smoothie/), [Flask](https://github.com/mitsuhiko/flask) and [Flask-Sockets](https://github.com/kennethreitz/flask-sockets).
 
 >     pip install flask
 >     pip install flask-sockets
@@ -133,9 +141,9 @@ Don't forget the folder structure needed for a flask project :
  |- templates/
       |- index.html
 
-We can now see our beautiful empty chart at 127.0.0.1:5000 as soon as we've launched our app (`python app.py`)
+Take a look at our beautiful empty chart at 127.0.0.1:5000 !
 
-There is still two things to do : get the data sent by our tweepy backend and send it to the client's browser.
+There are still two things to do : get the data sent by our tweepy backend and send it to the client's browser.
 
 The first part will be using gevent to fetch the data asyncronously and I've been stuck quite a while on this. I still don't know if it's the way to go so please feel free to leave a comment if I'm not doing it the right way.
 
@@ -172,7 +180,7 @@ The first part will be using gevent to fetch the data asyncronously and I've bee
     if __name__ == "__main__":
        app.run()
 
-If you launch this and the python script we wrote in the first part you should have an output like :
+If you launch this and the python script we wrote in the first part, you should have an output like this :
 
     :::shell
     * Running on http://127.0.0.1:5001/
@@ -181,9 +189,9 @@ If you launch this and the python script we wrote in the first part you should h
     {'pattern': None, 'type': 'message', 'channel': 'hashtag', 'data': 'football'}
 
 And that's great because it means we are getting the data we want to display !
-The last step will be sending the data to the client and displaying it. This is where we'll use websockets. 
+The last step is about sending the data to the client and displaying it. This is where we'll use websockets. 
 
-I've never done Websockets but hey, I'm pretty good at raw sockets so that should be easy ! Well, I still got stucked for a little while on it before understanding exactly how it works. But I think I got it now and I came to this code :
+I've never done Websockets but hey, I'm pretty good at raw sockets so that should be easy ! Well, I still got stucked for a little while before understanding exactly how it works. But I think I got it now and I came to this code :
 
       :::javascript
       function createTimeline() {
@@ -197,11 +205,11 @@ I've never done Websockets but hey, I'm pretty good at raw sockets so that shoul
         }
       }
 
-That was for the `index.html` file, we will just log what we get for now. It's a little more complicated for the server part and there is one thing you should know before trying to launch the webserver using `app.run()`. 
+That was for the `index.html` file. We will only log the data we get for now. It's a little more complicated for the server part and there is one thing you should know before trying to launch the webserver using `app.run()`. 
 
 Flask uses WSGI as a default server and WSGI does not support websockets, so we will use `gunicorn`. You can already try it with `gunicorn -k flask_sockets.worker app:app`. This should launch the web server and display the empty chart exactly like before but on the port 8000. You can use `-b 127.0.0.1:5000` if you want to use the port 5000, though.
 
-I'll paste the whole new version of app.py because there is a lot a new code and it will be the final version.
+I'll paste the whole new version of `app.py` because there is a lot a new code and it will be the final version.
 
     :::python
     import gevent.monkey
@@ -252,7 +260,7 @@ I'll paste the whole new version of app.py because there is a lot a new code and
 
 
 That works great, we can see in our browser when twitter sends us a science or football hashtag !
-Final step to make everything work : draw that empty chart ! There is not that much difficulty here since `smoothie.js` is really easy to use so even if I'm not really good at javascript I should be able to do it.
+Final step to make everything work : draw that empty chart ! There is not that much difficulty here since `smoothie.js` is really easy to use, so even if I'm not really good at javascript, I should be able to do it.
 
     :::javascript
     function createTimeline() {
@@ -294,7 +302,7 @@ Final step to make everything work : draw that empty chart ! There is not that m
 	}
     }
 
-Yay ! Done ! That looks great and science & football are really great competitors they stay really close to each other. (science is red & football is green)
+Yay ! Done ! That looks nice and science & football are really good competitors, they stay really close to each other (science is red & football is green).
 
 #### Result
 
@@ -302,4 +310,4 @@ Yay ! Done ! That looks great and science & football are really great competitor
 
 Thanks a lot if you've read this far, let me know if this was too long, cool, boring or whatever, I'll gladly correct any typo or error I made.
 
-The next post will be a lot shorter I think and I'll try to write about something else than python/js.
+I think the next post will be a lot shorter, and I'll try to write about something else than python/javascript.
