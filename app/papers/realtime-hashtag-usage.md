@@ -132,14 +132,15 @@ With a simple template :
 
 Don't forget the folder structure needed for a flask project :
 
- /
- |- app.py
- |
- |- static/
- |    |- smoothie.js
- |
- |- templates/
-      |- index.html
+    /
+    |- app.py
+    |
+    |- static/
+    |    |- smoothie.js
+    |
+    |- templates/
+         |- index.html
+
 
 Take a look at our beautiful empty chart at 127.0.0.1:5000 !
 
@@ -193,17 +194,17 @@ The last step is about sending the data to the client and displaying it. This is
 
 I've never done Websockets but hey, I'm pretty good at raw sockets so that should be easy ! Well, I still got stucked for a little while before understanding exactly how it works. But I think I got it now and I came to this code :
 
-      :::javascript
-      function createTimeline() {
-        var chart = new SmoothieChart();
-        chart.streamTo(document.getElementById("chart"), 500);
+    :::javascript
+    function createTimeline() {
+      var chart = new SmoothieChart();
+      chart.streamTo(document.getElementById("chart"), 500);
 
-        var inbox = new WebSocket("ws://127.0.0.1:8000/hashtag");
+      var inbox = new WebSocket("ws://127.0.0.1:8000/hashtag");
 
-        inbox.onmessage = function(message) {
-          console.log(message.data);
-        }
+      inbox.onmessage = function(message) {
+        console.log(message.data);
       }
+    }
 
 That was for the `index.html` file. We will only log the data we get for now. It's a little more complicated for the server part and there is one thing you should know before trying to launch the webserver using `app.run()`. 
 
