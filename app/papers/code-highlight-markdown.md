@@ -2,6 +2,10 @@ title : Highlight your code with markdown, codehilite and pygments
 
 date : 04-07-2014
 
+description : Learn how I highlight the code blocks on the blog. It's probably the easiest way to do it !
+
+author : volent
+
 ----------
 
 In this post I will explain how I highlight the code blocks on the blog. I think it's the easiest way to do it and probably the way most people do it.

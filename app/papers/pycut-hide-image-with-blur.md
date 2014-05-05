@@ -2,6 +2,10 @@ title : Pycut : hide an image and reveal it
 
 date : 04-17-2014
 
+description : Learn how to hide and reveal an image in a given number of steps with the Pillow library.
+
+author : volent
+
 ----------
 
 For my job I had to build a tool to hide (and ultimately reveal) an image step by step.

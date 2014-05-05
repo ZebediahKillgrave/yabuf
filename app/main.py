@@ -1,4 +1,6 @@
 from flask import Flask, request, render_template, url_for, redirect, abort
+from werkzeug.contrib.atom import AtomFeed
+from urlparse import urljoin
 from markdown import markdown
 from os import listdir, stat
 from os.path import isfile, join, dirname
@@ -9,6 +11,11 @@ app = Flask(__name__)
 PAPERS_PATH = join(dirname(__file__), 'papers/')
 
 class HeaderGrammar(object):
+
+    """
+    Parse header grammar.
+    For each variable it will setattr(self, variable, value).
+    """
 
     expr_sep = ":"
     expr_comment = "//"
@@ -49,6 +56,7 @@ class Paper(object):
         self.author = getattr(hg, "author", "volent")
         self.title = getattr(hg, "title", paper_name)
         self.sticky = getattr(hg, "sticky", None)
+        self.description = getattr(hg, "description", None)
         self.content = markdown(hg.content, output_format="html5", extensions=['codehilite'])
 
 def fetch_all_papers():
@@ -87,6 +95,28 @@ def index():
     stickies.sort()
     return render_template('index.html', paper_name='index', # don't remove
                            stickies=stickies, papers=papers)
+
+def make_external(url):
+    return urljoin(request.url_root, url)
+
+@app.route('/recent.atom')
+def recent_feed():
+    stickies, papers = fetch_all_papers()
+    papers.sort()
+    papers = [p[1] for p in papers if not p[1].sticky]
+    papers.reverse()
+
+    feed = AtomFeed('Recent Articles',
+                    feed_url=request.url, url=request.url_root)
+
+    for article in papers[:15]:
+        feed.add(article.title, unicode(article.content),
+                 content_type='html',
+                 author=article.author,
+                 url=make_external(article.paper_name),
+                 updated=article.date,
+                 published=article.date)
+    return feed.get_response()
 
 def main():
     app.run(host='0.0.0.0', debug=True)

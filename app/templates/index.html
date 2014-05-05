@@ -12,13 +12,17 @@ I'm building cool stuff using python, javascript and other things. Come read abo
 {% block content %}
 {% for paper in papers %}
 <a href="{{ url_for('papers', paper_name=paper.paper_name) }}">
-  <h1>{{ paper.title }}</h1>
+  <h3>{{ paper.title }}</h3>
 </a>
-{{ paper.content|safe }}
+{{ paper.description|safe }}
 <p>
-  <a href="{{ url_for('papers', paper_name=paper.paper_name)}}#disqus_thread">
-    0 Comments</a>
-  ▻ {{ paper.fmt_date }}
+<i>{{ paper.fmt_date }}</i>
+<a href="{{ url_for('papers', paper_name=paper.paper_name)}}#disqus_thread">
+  0 Comments
+</a>
+<a href="{{ url_for('papers', paper_name=paper.paper_name) }}">
+  <i>Read more → </i>
+</a>
 </p>
 {% endfor %}
 {% endblock %}

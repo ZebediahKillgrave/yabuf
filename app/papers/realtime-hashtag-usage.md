@@ -2,6 +2,10 @@ title : Realtime chart showing hashtag usage
 
 date : 04-02-2014
 
+description : In this post I will explain how I made a realtime graph comparing two hashtags usage with Python, javascript and websockets.
+
+author : volent
+
 ----------
 
 I recently started to use the [tweepy](https://github.com/tweepy/tweepy) module for work and used the API a lot. Unfortunately I didn't find any opportunity to use the stream part of the API, so after some thinking I went with the idea that following **hashtag usage in realtime** would be awesome !

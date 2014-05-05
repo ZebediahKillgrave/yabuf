@@ -4,6 +4,8 @@ date : 03-30-2014
 
 author : volent
 
+description : This is my first blog and I'll be writing about my projects (mostly python, javascript and and who knows what else).
+
 ----------
 
 This is my first blog and I plan to post as much as I can on it.
