@@ -106,7 +106,7 @@ def recent_feed():
     papers = [p[1] for p in papers if not p[1].sticky]
     papers.reverse()
 
-    feed = AtomFeed('Recent Articles',
+    feed = AtomFeed('blog.volent.fr - Recent Articles',
                     feed_url=request.url, url=request.url_root)
 
     for article in papers[:15]:
