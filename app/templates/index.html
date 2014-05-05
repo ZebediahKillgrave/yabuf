@@ -1,6 +1,14 @@
 {% extends "base.html" %}
 {% set active_page = "index" %}
 
+{% block title %}
+Index
+{% endblock %}
+
+{% block description %}
+I'm building cool stuff using python, javascript and other things. Come read about my experiences !
+{% endblock %}
+
 {% block content %}
 {% for paper in papers %}
 <a href="{{ url_for('papers', paper_name=paper.paper_name) }}">

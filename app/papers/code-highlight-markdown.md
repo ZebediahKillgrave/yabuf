@@ -27,7 +27,7 @@ Now, let's put nice colors on some python code :
     ...""", ['codehilite'])
     u'<div class="codehilite"><pre><span class="k">def</span> <span class="nf">printf</span><span class="p">(</span><span class="n">msg</span><span class="o">=</span><span class="s">&quot;Hello World !&quot;</span><span class="p">):</span>\n    <span class="sd">&#39;&#39;&#39;Wrap print statement in a function&#39;&#39;&#39;</span>\n    <span class="k">print</span> <span class="n">msg</span>\n</pre></div>'
 
-So we got some HTML with many <span> blocks but if you try to display that, it won't be highligted. This is were we need pygments, it will generate a css file that will highlight the code based on the class specified by codehilite.
+So we got some HTML with many `<span>` blocks but if you try to display that, it won't be highligted. This is were we need pygments, it will generate a css file that will highlight the code based on the class specified by codehilite.
 
     pygmentize -f html -S default -a .codehilite > highlight.css
 

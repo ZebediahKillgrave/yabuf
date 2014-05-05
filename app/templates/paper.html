@@ -1,5 +1,13 @@
 {% extends "base.html" %}
 
+{% block description %}
+I'm building cool stuff using python, javascript and other things. Come read about my experiences !
+{% endblock %}
+
+{% block title %}
+{{ paper.title }}
+{% endblock %}
+
 {% block content %}
 <h1>{{ paper.title }}</h1>
 {{ paper.content|safe }}
